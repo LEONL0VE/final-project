@@ -18,7 +18,7 @@ plt.style.use("ggplot")
 # 如果需要调整TSlib-test.ipynb文件的路径位置 注意同时调整导入的路径
 from models import iTransformer
 from utils.timefeatures import time_features
-# 解决画图中文显示问题
+# 
 plt.rcParams['font.sans-serif'] = ['SimHei']
 plt.rcParams['axes.unicode_minus'] = False
 def tslib_data_loader(window, length_size, batch_size, data, data_mark):
