@@ -219,7 +219,7 @@ def cal_eval(y_real, y_pred):
                            index=['Eval'])
 
     return df_eval
-df = pd.read_csv('data\\test_data_多变量.csv')
+df = pd.read_csv('data\\concatenated_result917_V1.csv')
 # 注意多变量情况下，目标变量必须为最后一列
 data_dim = df[df.columns.drop('date')].shape[1]  # 一共多少个变量
 data_target = df['Target']  # 预测的目标变量
@@ -399,6 +399,6 @@ plt.show()
 # 将真实值和预测值合并为一个 DataFrame
 result_df = pd.DataFrame({'真实值': true.flatten(), '预测值': pred.flatten()})
 # 保存 DataFrame 到一个 CSV 文件
-result_df.to_csv('真实值与预测值7.csv', index=False, encoding='utf-8')
+result_df.to_csv('concatenated_result917_V1_预测值.csv', index=False, encoding='utf-8')
 # 打印保存成功的消息
-print('真实值和预测值已保存到真实值与预测值.csv文件中。')
+print('真实值和预测值已保存到 concatenated_result917_V1_预测值.csv 文件中。')
