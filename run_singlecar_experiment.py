@@ -9,6 +9,9 @@ import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.svm import SVR
+from sklearn.ensemble import RandomForestRegressor
+import xgboost as xgb
 
 # Import iTransformer model
 from models import iTransformer
@@ -91,7 +94,13 @@ def create_dataset_loader(df_train, df_test, window_size=30, pred_len=1, batch_s
     train_loader = DataLoader(TensorDataset(x_train, y_train, x_train_mark, y_train_mark), batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(TensorDataset(x_test, y_test, x_test_mark, y_test_mark), batch_size=batch_size, shuffle=False)
     
-    return train_loader, test_loader, scaler
+    # Return raw tensors for ML models
+    ml_data = {
+        "x_train": x_train.numpy(), "y_train": y_train.numpy(),
+        "x_test": x_test.numpy(), "y_test": y_test.numpy()
+    }
+    
+    return train_loader, test_loader, scaler, ml_data
 
 ### 2. Model Definitions (Same Improved Models) ###
 
@@ -103,13 +112,13 @@ class BaseModel(nn.Module):
 class CNNLSTM(BaseModel):
     def __init__(self, input_dim, seq_len, hidden_dim=128, output_len=1):
         super().__init__()
-        self.conv = nn.Conv1d(in_channels=input_dim, out_channels=64, kernel_size=3, padding=1)
-        self.bn = nn.BatchNorm1d(64)
+        self.conv = nn.Conv1d(in_channels=input_dim, out_channels=32, kernel_size=3, padding=1) # Reduced channels
+        self.bn = nn.BatchNorm1d(32)
         self.relu = nn.ReLU()
-        self.dropout = nn.Dropout(0.1)
+        self.dropout = nn.Dropout(0.3) # Increased Dropout
         
-        self.lstm = nn.LSTM(64, hidden_dim, num_layers=2, batch_first=True, 
-                           dropout=0.1, bidirectional=True)
+        self.lstm = nn.LSTM(32, hidden_dim, num_layers=1, batch_first=True, 
+                           dropout=0.3, bidirectional=True) # Reduced layers
         self.linear = nn.Linear(hidden_dim * 2, output_len)
 
     def forward(self, x, x_mark, y, y_mark, mask=None):
@@ -128,8 +137,8 @@ class CNNLSTM(BaseModel):
 class BiGRUModel(BaseModel):
     def __init__(self, input_dim, hidden_dim=128, num_layers=2, output_len=1):
         super().__init__()
-        self.gru = nn.GRU(input_dim, hidden_dim, num_layers, batch_first=True, 
-                          dropout=0.1, bidirectional=True)
+        self.gru = nn.GRU(input_dim, hidden_dim, num_layers=1, batch_first=True, 
+                          dropout=0.3, bidirectional=True) # Reduced layers & Increased Dropout
         self.linear = nn.Linear(hidden_dim * 2, output_len)
 
     def forward(self, x, x_mark, y, y_mark, mask=None):
@@ -142,13 +151,13 @@ class BiGRUModel(BaseModel):
 class CNNGRU(BaseModel):
     def __init__(self, input_dim, seq_len, hidden_dim=128, output_len=1):
         super().__init__()
-        self.conv = nn.Conv1d(in_channels=input_dim, out_channels=64, kernel_size=3, padding=1)
-        self.bn = nn.BatchNorm1d(64)
+        self.conv = nn.Conv1d(in_channels=input_dim, out_channels=32, kernel_size=3, padding=1) # Reduced channels
+        self.bn = nn.BatchNorm1d(32)
         self.relu = nn.ReLU()
-        self.dropout = nn.Dropout(0.1)
+        self.dropout = nn.Dropout(0.3) # Increased Dropout
         
-        self.gru = nn.GRU(64, hidden_dim, num_layers=2, batch_first=True, 
-                          dropout=0.1, bidirectional=True)
+        self.gru = nn.GRU(32, hidden_dim, num_layers=1, batch_first=True, 
+                          dropout=0.3, bidirectional=True) # Reduced layers
         self.linear = nn.Linear(hidden_dim * 2, output_len)
 
     def forward(self, x, x_mark, y, y_mark, mask=None):
@@ -267,20 +276,59 @@ def main():
         
     print(f"Results will be saved to: {result_dir}")
     
-    train_loader, test_loader, scaler = create_dataset_loader(df_train, df_test, WINDOW_SIZE, PRED_LEN, BATCH_SIZE)
+    train_loader, test_loader, scaler, ml_data = create_dataset_loader(df_train, df_test, WINDOW_SIZE, PRED_LEN, BATCH_SIZE)
     results = {}
     
+    # --- Traditional Machine Learning Models ---
+    print("\nRunning Traditional Machine Learning Models...")
+    
+    # Flatten data for ML models: (Samples, Window * Features)
+    x_train_ml = ml_data["x_train"].reshape(ml_data["x_train"].shape[0], -1)
+    y_train_ml = ml_data["y_train"][:, -PRED_LEN, -1].reshape(-1)
+    x_test_ml = ml_data["x_test"].reshape(ml_data["x_test"].shape[0], -1)
+    y_test_ml = ml_data["y_test"][:, -PRED_LEN, -1].reshape(-1)
+    
+    # ML Models Dictionary
+    ml_models = [
+        ("SVR", SVR(kernel='rbf', C=100, gamma=0.1, epsilon=0.1)),
+        ("RandomForest", RandomForestRegressor(n_estimators=100, random_state=42)),
+        ("XGBoost", xgb.XGBRegressor(objective='reg:squarederror', n_estimators=100, learning_rate=0.1, max_depth=5))
+    ]
+    
+    for name, model in ml_models:
+        print(f"Training {name}...")
+        model.fit(x_train_ml, y_train_ml)
+        preds = model.predict(x_test_ml)
+        
+        # Inverse transform
+        target_col_idx = -1
+        data_min = scaler.data_min_[target_col_idx]
+        data_max = scaler.data_max_[target_col_idx]
+        
+        preds_inv = preds * (data_max - data_min) + data_min
+        trues_inv = y_test_ml * (data_max - data_min) + data_min
+        
+        mse = mean_squared_error(trues_inv, preds_inv)
+        mae = mean_absolute_error(trues_inv, preds_inv)
+        r2 = r2_score(trues_inv, preds_inv)
+        
+        results[name] = {"MSE": mse, "MAE": mae, "R2": r2, "Preds": preds_inv, "Trues": trues_inv}
+        print(f"{name} Results: MSE={mse:.4f}, R2={r2:.4f}")
+
+    # --- Deep Learning Models ---
     # Models
+    # Reduced hidden dims: 128 -> 48 for smaller dataset to prevent overfitting
     models_to_run = [
-        ("CNN-BiLSTM", CNNLSTM(INPUT_DIM, WINDOW_SIZE, 128, PRED_LEN)),
-        ("Bi-GRU", BiGRUModel(INPUT_DIM, 128, 2, PRED_LEN)),
-        ("CNN-BiGRU", CNNGRU(INPUT_DIM, WINDOW_SIZE, 128, PRED_LEN))
+        ("CNN-BiLSTM", CNNLSTM(INPUT_DIM, WINDOW_SIZE, 48, PRED_LEN)),
+        ("Bi-GRU", BiGRUModel(INPUT_DIM, 48, 1, PRED_LEN)),
+        ("CNN-BiGRU", CNNGRU(INPUT_DIM, WINDOW_SIZE, 48, PRED_LEN))
     ]
     
     for name, model in models_to_run:
         print(f"\nRunning {name}...")
         model = model.to(device)
-        opt = optim.Adam(model.parameters(), lr=LR)
+        # Added weight_decay for regularization
+        opt = optim.Adam(model.parameters(), lr=LR, weight_decay=1e-4) 
         crit = nn.MSELoss()
         train_model(model, train_loader, crit, opt, device, EPOCHS, PRED_LEN)
         results[name] = evaluate_model(model, test_loader, scaler, device, PRED_LEN)
