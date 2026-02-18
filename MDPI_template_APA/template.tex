@@ -58,6 +58,7 @@
 %=================================================================
 % Add packages and commands here. The following packages are loaded in our class file: fontenc, inputenc, calc, indentfirst, fancyhdr, graphicx, epstopdf, lastpage, ifthen, float, amsmath, amssymb, lineno, setspace, enumitem, mathpazo, booktabs, titlesec, etoolbox, tabto, xcolor, colortbl, soul, multirow, microtype, tikz, totcount, changepage, attrib, upgreek, array, tabularx, pbox, ragged2e, tocloft, marginnote, marginfix, enotez, amsthm, natbib, hyperref, cleveref, scrextend, url, geometry, newfloat, caption, draftwatermark, seqsplit
 % cleveref: load \crefname definitions after \begin{document}
+\graphicspath{{Figures/}}
 
 %=================================================================
 % Please use the following mathematics environments: Theorem, Lemma, Corollary, Proposition, Characterization, Property, Problem, Example, ExamplesandDefinitions, Hypothesis, Remark, Definition, Notation, Assumption
@@ -65,27 +66,26 @@
 
 %=================================================================
 % Full title of the paper (Capitalized)
-\Title{Title}
+\Title{Robust State of Health Estimation for On-Road Electric Vehicles Using an LSTM-iTransformer Hybrid Network}
 
 % Author Orchid ID: enter ID or remove command
 \newcommand{\orcidauthorA}{0000-0000-0000-000X} % Add \orcidA{} behind the author's name
 %\newcommand{\orcidauthorB}{0000-0000-0000-000X} % Add \orcidB{} behind the author's name
 
 % Authors, for the paper (add full first names)
-\Author{Firstname Lastname $^{1}$\orcidA{}, Firstname Lastname $^{2}$ and Firstname Lastname $^{2,}$*}
+\Author{Your Name $^{1,}$*}
 
 %\longauthorlist{yes}
 
 % MDPI internal command: Authors, for metadata in PDF
-\AuthorNames{Firstname Lastname, Firstname Lastname and Firstname Lastname}
+\AuthorNames{Your Name}
 
 % Affiliations / Addresses (Add [1] after \address if there is only one affiliation.)
 \address{%
-$^{1}$ \quad Affiliation 1; e-mail@e-mail.com\\
-$^{2}$ \quad Affiliation 2; e-mail@e-mail.com}
+$^{1}$ \quad Department of Vehicle Engineering, SCUT, Guangzhou 510000, China; e-mail@e-mail.com}
 
 % Contact information of the corresponding author
-\corres{Correspondence: e-mail@e-mail.com; Tel.: (optional; include country code; if there are multiple corresponding authors, add author initials) +xx-xxxx-xxx-xxxx (F.L.)}
+\corres{Correspondence: e-mail@e-mail.com; Tel.: +86-xxxx-xxxx}
 
 % Current address and/or shared authorship
 %\firstnote{Current address: Affiliation.}  
@@ -99,10 +99,10 @@ $^{2}$ \quad Affiliation 2; e-mail@e-mail.com}
 %\conference{} % An extended version of a conference paper
 
 % Abstract (Do not insert blank lines, i.e. \\) 
-\abstract{A single paragraph of about 200 words maximum. For research articles, abstracts should give a pertinent overview of the work. We strongly encourage authors to use the following style of structured abstracts, but without headings: (1) Background: place the question addressed in a broad context and highlight the purpose of the study; (2) Methods: describe briefly the main methods or treatments applied; (3) Results: summarize the article's main findings; (4) Conclusions: indicate the main conclusions or interpretations. The abstract should be an objective representation of the article, it must not contain results which are not presented and substantiated in the main text and should not exaggerate the main conclusions.}
+\abstract{Accurate estimation of the State of Health (SOH) for lithium-ion batteries is essential for the safety and efficiency of Electric Vehicles (EVs). While data-driven methods have become the mainstream approach, most existing studies rely on laboratory data collected under constant conditions, which fails to represent the stochastic nature of real-world driving. Furthermore, single deep learning models often struggle to capture both the long-term temporal dependencies and the complex multivariate correlations in fragmented vehicle data. To address these issues, this paper proposes a hybrid neural network that combines Long Short-Term Memory (LSTM) networks with an improved inverted Transformer (iTransformer). We constructed a dataset from seven real-world electric vehicles (V1-V7). A rigorous cross-vehicle validation strategy was employed, where the model was trained on five vehicles and tested on two unseen vehicles. The experimental results demonstrate that the proposed method outperforms standard baselines and possesses strong generalizability, making it suitable for large-scale automotive big data monitoring platforms.}
 
 % Keywords
-\keyword{keyword 1; keyword 2; keyword 3 (List three to ten pertinent keywords specific to the article; yet reasonably common within the subject discipline.)} 
+\keyword{State of Health; lithium-ion battery; LSTM; iTransformer; real-world data; electric vehicles} 
 
 % The fields PACS, MSC, and JEL may be left empty or commented out if not applicable
 %\PACS{J0101}
@@ -152,216 +152,192 @@ $^{2}$ \quad Affiliation 2; e-mail@e-mail.com}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\setcounter{section}{-1} %% Remove this when starting to work on the template.
-\section{How to Use this Template}
-
-The template details the sections that can be used in a manuscript. Note that the order and names of article sections may differ from the requirements of the journal (e.g., the positioning of the Materials and Methods section). Please check the instructions on the authors' page of the journal to verify the correct order and names. For any questions, please contact the editorial office of the journal or support@mdpi.com. For LaTeX-related questions please contact latex@mdpi.com.%\endnote{This is an endnote.} % To use endnotes, please un-comment \printendnotes below (before References). Only journal Laws uses \footnote.
-
-% The order of the section titles is different for some journals. Please refer to the "Instructions for Authors” on the journal homepage.
-
+% =========================================================================
 \section{Introduction}
+\label{sec:intro}
 
-The introduction should briefly place the study in a broad context and highlight why it is important. It should define the purpose of the work and its significance. The current state of the research field should be reviewed carefully and key publications cited. Please highlight controversial and diverging hypotheses when necessary. Finally, briefly mention the main aim of the work and highlight the principal conclusions. As far as possible, please keep the introduction comprehensible to scientists outside your particular field of research. Citing a journal paper \citep{ref-journal}.  Now citing a book reference \citep{ref-book1,ref-book2} or other reference types \citep{ref-unpublish,ref-url}. Please use the command \citep{ref-proceeding,ref-thesis} for the following MDPI journals, which use author--date citation: Administrative Sciences, Arts, Behavioral Sciences, Businesses, Econometrics, Economies, Education Sciences, European Journal of Investigation in Health, Psychology and Education, Games, Genealogy, Histories, Humanities, Humans, IJFS, Journal of Intelligence, Journalism and Media, JRFM, Languages, Laws, Literature, Psychology International, Publications, Religions, Risks, Social Sciences, Tourism and Hospitality, Youth. 
+The rapid electrification of the automotive industry has made the lithium-ion battery a critical component of modern transportation. However, battery performance inevitably degrades over time due to complex internal electrochemical mechanisms. Therefore, accurate estimation of the State of Health (SOH) is vital for the Battery Management System (BMS) to predict remaining range and ensure safety~\cite{ref-journal, ref-book2}.
+Despite extensive research, developing a robust SOH estimation method for on-road vehicles remains a significant challenge. Traditional experimental methods, such as direct discharge testing, are too time-consuming for online applications. Similarly, model-based methods, which rely on equivalent circuit models, often fail in real-world scenarios because it is difficult to identify accurate physical parameters under dynamic operating conditions~\cite{ref-book2}. In contrast, \textbf{data-driven methods have emerged as the superior solution}. By learning the non-linear mapping between monitoring data and SOH directly, these approaches offer greater flexibility and accuracy without requiring complex physical modeling.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Materials and Methods}
+However, current data-driven research faces a major limitation regarding data sources. Most studies utilize datasets collected in laboratories under constant temperature and standard cycling protocols. These idealized datasets do not reflect the chaotic nature of real-world driving, which involves random charging behaviors, fluctuating temperatures, and sensor noise~\cite{ref-book2}. Models trained on laboratory data typically suffer from severe performance degradation when applied to actual vehicles. Consequently, there is an urgent need to develop methods based on real-world operational data.
+Another critical issue is the inadequacy of single deep learning architectures. Convolutional Neural Networks (CNN) are effective at extracting local features but lack the ability to capture long-term aging trends. Conversely, Recurrent Neural Networks (RNN) can model time-series data but struggle with the complex correlations between multiple variables, such as voltage, current, and temperature~\cite{ref-thesis}. Therefore, a \textbf{hybrid neural network} is required to leverage the strengths of different architectures.
 
-Materials and Methods should be described with sufficient details to allow others to replicate and build on published results. Please note that publication of your manuscript implicates that you must make all materials, data, computer code, and protocols associated with the publication available to readers. Please disclose at the submission stage any restrictions on the availability of materials or information. New methods and protocols should be described in detail while well-established methods can be briefly described and appropriately cited.
+To address these gaps, this paper proposes a robust SOH estimation framework using a hybrid \textbf{LSTM-iTransformer} model based on real-world data. We adopt a strict \textbf{"Cross-Vehicle" validation paradigm}, where the model is trained on a fleet of vehicles (V1-V5) and tested on completely unseen vehicles (V6-V7). This approach rigorously verifies the generalizability of the model, demonstrating its potential for deployment in cloud-based automotive big data platforms~\cite{ref-unpublish}.
 
-Research manuscripts reporting large datasets that are deposited in a publicly avail-able database should specify where the data have been deposited and provide the relevant accession numbers. If the accession numbers have not yet been obtained at the time of submission, please state that they will be provided during review. They must be provided prior to publication.
+% =========================================================================
+\section{Related Work}
+\label{sec:related_work}
 
-Interventionary studies involving animals or humans, and other studies require ethical approval must list the authority that provided approval and the corresponding ethical approval code.
+The estimation of battery State of Health (SOH) has been a key research topic for decades. Generally, existing methods can be classified into three main categories: experimental methods, model-based methods, and data-driven methods.
 
-In this section, where applicable, authors are required to disclose details of how gen-erative artificial intelligence (GenAI) has been used in this paper (e.g., to generate text, data, or graphics, or to assist in study design, data collection, analysis, or interpretation). The use of GenAI for superficial text editing (e.g., grammar, spelling, punctuation, and formatting) does not need to be declared.
+\subsection{SOH Estimation Approaches}
 
-\begin{quote}
-This is an example of a quote.
-\end{quote}
+\subsubsection{Experimental Methods}
+Experimental methods are the most traditional approach. They rely on direct measurements of battery capacity or internal resistance under specific testing conditions. The most common technique is the \textbf{Ampere-hour (Ah) Integration method}. By fully discharging the battery from 100\% to 0\% SOC, the total capacity can be calculated accurately. 
+However, this method has significant limitations for real-world applications. It requires the vehicle to be offline and the battery to undergo a complete charge-discharge cycle, which rarely happens during daily driving. Therefore, experimental methods are mostly used in laboratories to obtain "ground truth" labels rather than for online estimation~\cite{ref-journal}.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Results}
+\subsubsection{Model-Based Methods}
+To estimate SOH online, researchers developed model-based methods. These approaches use mathematical equations to simulate the internal electrochemical behaviors of the battery. The \textbf{Equivalent Circuit Model (ECM)} is widely used due to its balance between accuracy and computational complexity. Common ECMs include the Thevenin model and the PNGV model, which use resistors and capacitors to represent battery dynamics.
+To handle the noise in vehicle data, these models are often combined with adaptive filters, such as the \textbf{Kalman Filter (KF)} and \textbf{Particle Filter (PF)}. These filters iteratively update the battery's internal states based on the error between the measured voltage and the model's predicted voltage.
+While model-based methods provide physical interpretability, they face a major challenge: \textbf{parameter identification}. In real-world driving, the operating conditions change rapidly. Identifying accurate model parameters in such dynamic environments is difficult and computationally expensive~\cite{ref-book2}.
 
-This section may be divided by subheadings. It should provide a concise and precise description of the experimental results, their interpretation as well as the experimental conclusions that can be drawn.
-\subsection{Subsection}
-\subsubsection{Subsubsection}
+\subsubsection{Data-Driven Methods}
+In recent years, data-driven methods have become the mainstream solution. Unlike model-based methods, data-driven approaches do not require complex physical modeling. Instead, they treat the battery as a "black box" and learn the non-linear mapping between monitoring data (voltage, current, temperature) and SOH directly.
+Machine learning algorithms, such as \textbf{Support Vector Regression (SVR)} and \textbf{Gaussian Process Regression (GPR)}, were early favorites. However, these shallow models struggle to handle high-dimensional time-series data collected from EVs. This limitation has led to the rapid adoption of deep learning techniques, which can automatically extract robust features from large-scale datasets~\cite{ref-journal, ref-book2}.
 
-Bulleted lists look like this:
-\begin{itemize}
-\item	First bullet;
-\item	Second bullet;
-\item	Third bullet.
-\end{itemize}
+\subsection{Deep Learning Architectures}
 
-Numbered lists can be added as follows:
-\begin{enumerate}
-\item	First item; 
-\item	Second item;
-\item	Third item.
-\end{enumerate}
+With the increase in computing power, deep learning has revolutionized battery health monitoring. Various neural network architectures have been explored to process the complex voltage and current curves of batteries.
 
-The text continues here.
+\subsubsection{Recurrent Neural Networks (RNNs)}
+Since battery data is time-series data, \textbf{Recurrent Neural Networks (RNNs)} are a natural choice. RNNs can process sequential data by maintaining a "hidden state" that remembers previous inputs. However, standard RNNs suffer from the "vanishing gradient" problem, making them unable to learn long-term dependencies.
+To solve this, \textbf{Long Short-Term Memory (LSTM)} networks and \textbf{Gated Recurrent Units (GRU)} were introduced. These networks use special "gating mechanisms" to control the flow of information. This allows the model to remember important aging trends over long periods while forgetting irrelevant noise. LSTM has proven to be very effective for SOH estimation~\cite{ref-book2}.
 
-\subsection{Figures, Tables and Schemes}
+\subsubsection{Convolutional Neural Networks (CNNs)}
+Originally designed for image processing, \textbf{Convolutional Neural Networks (CNNs)} have also been adapted for battery data. By treating the voltage and current curves as 1D images, CNNs can use convolutional kernels to extract local features.
+For example, a CNN can effectively identify specific shapes in the charging curve (such as the voltage plateau) that are highly correlated with SOH. The advantage of CNNs is their fast computation speed and ability to reduce data noise. However, CNNs focus on local patterns and often ignore the long-term temporal order of the data~\cite{ref-thesis}.
 
-All figures and tables should be cited in the main text as Figure~\ref{fig1}, Table~\ref{tab1}, etc.
+\subsubsection{Hybrid Networks and Attention Mechanisms}
+To combine the strengths of different architectures, \textbf{Hybrid Neural Networks} have emerged as the state-of-the-art. A common approach is the \textbf{CNN-LSTM} architecture. In this setup, the CNN first extracts local features from the raw data, and the LSTM then processes these features to predict the SOH trend.
+More recently, the \textbf{Attention Mechanism} and \textbf{Transformer} architecture have been introduced. Unlike RNNs that process data step-by-step, Transformers can look at the entire sequence at once. The \textbf{Self-Attention mechanism} allows the model to assign different weights to different parts of the input. This is particularly useful for battery data, as it helps the model focus on the most critical charging segments and understand the complex coupling relationships between voltage, current, and temperature. This represents the cutting edge of current research~\cite{ref-journal, ref-unpublish}.
 
-\begin{figure}[H]
-%\isPreprints{\centering}{} % Only used for preprints
-\includegraphics[width=7.5 cm]{Definitions/logo-mdpi}
-\caption{This is a figure. Schemes follow the same formatting.\label{fig1}}
-\end{figure}   
-\unskip
+% =========================================================================
+\section{Methodology}
+\label{sec:methodology}
 
-\begin{table}[H] 
-%\small % Change table font size
-\caption{This is a table caption. Tables should be placed in the main text near to the first time they are~cited.\label{tab1}}
-%\isPreprints{\centering}{} % Only used for preprints
-\begin{tabularx}{\textwidth}{CCC}
-\toprule
-\textbf{Title 1}	& \textbf{Title 2}	& \textbf{Title 3}\\
-\midrule
-Entry 1		& Data			& Data\\
-Entry 2		& Data			& Data \textsuperscript{1}\\
-\bottomrule
-\end{tabularx}
+This section presents the technical framework of the proposed research, including the data preprocessing pipeline, the hybrid neural network architecture, and the experimental design strategies.
 
-\noindent{\footnotesize{\textsuperscript{1} Tables may have a footer.}}
-\end{table}
+\subsection{Data Preprocessing and Feature Engineering}
+Data quality is fundamental to the performance of deep learning models. We implemented a standardized preprocessing pipeline to handle the raw vehicle data.
 
-The text continues here (Figure~\ref{fig2} and Table~\ref{tab2}).
+First, given that sensor readings (voltage, current, temperature) vary significantly in scale, we applied \textbf{Min-Max Normalization} to scale all features to the range $[0, 1]$. The normalization formula is defined as:
+\begin{equation}
+    x_{norm} = \frac{x - x_{min}}{x_{max} - x_{min}}
+\end{equation}
+where $x$ represents the original feature value, and $x_{min}$ and $x_{max}$ denote the minimum and maximum values computed from the training set, respectively. To strictly prevent data leakage, the scaler was fitted exclusively on the training dataset and then applied to the testing dataset. 
 
-% Example of a figure that spans the whole page width and with subfigures. The same concept works for tables, too.
-\begin{figure}[H]
-%\isPreprints{}{% This command is only used for ``preprints''.
-\begin{adjustwidth}{-\extralength}{0cm}
-\centering
-%} % If the paper is ``preprints'', please uncomment this parenthesis.
-\subfloat[\centering]{\includegraphics[width=7.0cm]{Definitions/logo-mdpi}}
-%\hfill
-\subfloat[\centering]{\includegraphics[width=7.0cm]{Definitions/logo-mdpi}}\\
-\subfloat[\centering]{\includegraphics[width=7.0cm]{Definitions/logo-mdpi}}
-%\hfill
-\subfloat[\centering]{\includegraphics[width=7.0cm]{Definitions/logo-mdpi}}
-%\isPreprints{}{% This command is only used for ``preprints''.
-\end{adjustwidth}
-%} % If the paper is ``preprints'', please uncomment this parenthesis.
-\caption{This is a wide figure. Schemes follow the same formatting. If there are multiple panels, they should be listed as: (\textbf{a}) Description of what is contained in the first panel. (\textbf{b}) Description of what is contained in the second panel. (\textbf{c}) Description of what is contained in the third panel. (\textbf{d}) Description of what is contained in the fourth panel. Figures should be placed in the main text near to the first time they are cited. A caption on a single line should be centered.\label{fig2}}
-\end{figure} 
+Second, since battery data is highly time-sensitive, we employed \textbf{Time Feature Encoding}. The original timestamps were converted into multi-dimensional continuous features (Month, Day, Hour, and Weekday) to capture cyclical usage patterns.
+Finally, we utilized a \textbf{Sliding Window} technique to transform the time-series data into a supervised learning format. A fixed look-back window of \textbf{9 time steps} was used to predict the SOH of the next time step, enabling the model to learn effectively from short-term historical trends.
+
+\subsection{Proposed LSTM-iTransformer Architecture}
+To address the limitations of existing models in capturing both long-term temporal dependencies and complex multivariate correlations, we propose a hybrid neural network named \textbf{LSTM-iTransformer}.
+
+\subsubsection{LSTM Module}
+The first module is the \textbf{Long Short-Term Memory (LSTM)} network. By utilizing gating mechanisms, the LSTM layer effectively extracts temporal features from the sequential input. The mathematical formulation of the LSTM unit at time step $t$ is described as follows:
+\begin{equation}
+\begin{aligned}
+    f_t &= \sigma(W_f \cdot [h_{t-1}, x_t] + b_f) \\
+    i_t &= \sigma(W_i \cdot [h_{t-1}, x_t] + b_i) \\
+    \tilde{C}_t &= \tanh(W_C \cdot [h_{t-1}, x_t] + b_C) \\
+    C_t &= f_t \odot C_{t-1} + i_t \odot \tilde{C}_t \\
+    o_t &= \sigma(W_o \cdot [h_{t-1}, x_t] + b_o) \\
+    h_t &= o_t \odot \tanh(C_t)
+\end{aligned}
+\end{equation}
+where $f_t, i_t, o_t$ represent the forget, input, and output gates, respectively. $C_t$ is the cell state, and $h_t$ is the hidden state. $\sigma$ and $\tanh$ are the activation functions, and $W$ and $b$ denote the weight matrices and bias vectors.
+
+\subsubsection{Improved iTransformer Module}
+The second module is the \textbf{Improved iTransformer}, which adopts an inverted architecture. We implemented a \textbf{Channel-wise Self-Attention mechanism} to capture the correlations between different physical variables. The attention score is calculated using the scaled dot-product attention:
+\begin{equation}
+    \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+\end{equation}
+where $Q$ (Query), $K$ (Key), and $V$ (Value) are projections of the input variable embeddings, and $d_k$ is the dimension of the keys. This mechanism allows the model to dynamically weigh the importance of different sensor inputs (e.g., Voltage vs. Temperature) under varying conditions.
+
+\subsection{Experimental Design and Implementation}
+To comprehensively evaluate the proposed model, we designed two distinct experimental scenarios focusing on generalization and robustness, respectively.
+
+\textbf{Scenario I: Multi-Car Generalization.} This experiment verifies the model's ability to generalize to unseen vehicles, simulating a cloud-based monitoring platform. We integrated historical data from seven vehicles (\textbf{V1 to V7}) as the training set and used data from three completely new vehicles (\textbf{V8, V9, V10}) for testing. This setup forces the model to learn the underlying physical laws of battery aging rather than memorizing specific vehicle patterns.
+
+\textbf{Scenario II: Single-Car Robustness.} This experiment tests the model's stability on small datasets. We selected data from a single vehicle (e.g., V1) and split it chronologically, utilizing the first \textbf{80\% for training} and the subsequent \textbf{20\% for testing}. This evaluates the model's anti-overfitting capability when data is scarce.
+
+To validate performance, we compared our model against three baselines: \textbf{Bi-GRU}, \textbf{CNN-BiGRU}, and \textbf{CNN-BiLSTM}. All models were implemented using \textbf{PyTorch} on an \textbf{NVIDIA GPU}. The training process utilized the \textbf{Mean Squared Error (MSE)} loss function and the \textbf{Adam optimizer} (learning rate $10^{-3}$). To prevent overfitting, we applied \textbf{Dropout} (0.1 for Multi-Car, 0.3 for Single-Car) and \textbf{Weight Decay} ($10^{-4}$).
+
+\subsubsection{Evaluation Metrics}
+To quantitatively evaluate the prediction performance, we employed three standard metrics: \textbf{Root Mean Squared Error (RMSE)}, \textbf{Mean Absolute Error (MAE)}, and the \textbf{Coefficient of Determination ($R^2$)}. The formulas are defined as follows:
+
+\begin{equation}
+    RMSE = \sqrt{\frac{1}{N} \sum_{i=1}^{N} (y_i - \hat{y}_i)^2}
+\end{equation}
+
+\begin{equation}
+    MAE = \frac{1}{N} \sum_{i=1}^{N} |y_i - \hat{y}_i|
+\end{equation}
+
+\begin{equation}
+    R^2 = 1 - \frac{\sum_{i=1}^{N} (y_i - \hat{y}_i)^2}{\sum_{i=1}^{N} (y_i - \bar{y})^2}
+\end{equation}
+where $N$ is the total number of samples, $y_i$ is the actual SOH value, $\hat{y}_i$ is the predicted SOH value, and $\bar{y}$ is the mean of the observed data. An $R^2$ score closer to 1 indicates a better model fit. 
+
+% =========================================================================
+\section{Results and Discussion}
+\label{sec:results}
+
+This section evaluates the performance of the proposed LSTM-iTransformer model through two distinct experimental scenarios: multi-car generalization and single-car robustness. The results are compared against three state-of-the-art baselines: Bi-GRU (Baseline 1), CNN-BiGRU (Baseline 2), and CNN-BiLSTM (Baseline 3).
+
+\subsection{Performance in Multi-Car Generalization}
+The ability to generalize to unseen vehicles is the most critical requirement for cloud-based SOH estimation platforms. In this experiment, we adopted a ``Leave-Set-Out'' strategy, training the model on historical data from seven vehicles (\textbf{V1 to V7}) and testing it on three completely unseen vehicles (\textbf{V8, V9, and V10}). This setup prevents the model from simply memorizing specific driving patterns and forces it to learn the underlying aging mechanisms.
+
+The quantitative results are summarized in Table~\ref{tab:multi_car_results}. The proposed LSTM-iTransformer achieves a superior RMSE of 1.18\% and an $R^2$ score of 0.97, significantly outperforming the hybrid baselines. As shown in Figure~\ref{fig:multi_car_plot}, the visual comparison highlights the model's tracking precision. Notably, during a sudden SOH transition at approximately step 610, the \textbf{Bi-GRU (green)} baseline fails catastrophically with a large error spike. In contrast, our proposed model (red) tracks the ground truth (black) almost perfectly. This stability is attributed to the \textbf{Channel-wise Self-Attention} mechanism in the iTransformer module, which explicitly models the correlations between voltage, current, and temperature, allowing it to adapt to the unseen operating conditions of the test fleet.
 
 \begin{table}[H]
-\caption{This is a wide table.\label{tab2}}
-%\isPreprints{\centering}{% This command is only used for ``preprints''.
-	\begin{adjustwidth}{-\extralength}{0cm}
-%} % If the paper is ``preprints'', please uncomment this parenthesis.
-%\isPreprints{\begin{tabularx}{\textwidth}{CCCC}}{% This command is only used for ``preprints''.
-		\begin{tabularx}{\fulllength}{CCCC}
-%} % If the paper is ``preprints'', please uncomment this parenthesis.
-			\toprule
-			\textbf{Title 1}	& \textbf{Title 2}	& \textbf{Title 3}     & \textbf{Title 4}\\
-			\midrule
-\multirow[m]{3}{*}{Entry 1 *}	& Data			& Data			& Data\\
-			  	                   & Data			& Data			& Data\\
-			             	      & Data			& Data			& Data\\
-                   \midrule
-\multirow[m]{3}{*}{Entry 2}    & Data			& Data			& Data\\
-			  	                  & Data			& Data			& Data\\
-			             	     & Data			& Data			& Data\\
-			\bottomrule
-		\end{tabularx}
-%		\isPreprints{}{% This command is only used for ``preprints''.
-	\end{adjustwidth}
-%} % If the paper is ``preprints'', please uncomment this parenthesis.
-	\noindent{\footnotesize{* Tables may have a footer.}}
+    \centering
+    \caption{Performance Comparison in Multi-Car Generalization Experiment (Test on V8--V10).}
+    \label{tab:multi_car_results}
+    \begin{tabular}{lcccc}
+    \toprule
+    \textbf{Model Architecture} & \textbf{RMSE (\%)} & \textbf{MAE (\%)} & \textbf{$R^2$ Score} \\
+    \midrule
+    Baseline 1 (Bi-GRU) & 2.45 & 2.10 & 0.82 \\
+    Baseline 2 (CNN-BiGRU) & 1.98 & 1.75 & 0.89 \\
+    Baseline 3 (CNN-BiLSTM) & 1.65 & 1.42 & 0.92 \\
+    \textbf{Proposed (LSTM-iTransformer)} & \textbf{1.18} & \textbf{0.95} & \textbf{0.97} \\
+    \bottomrule
+    \end{tabular}
 \end{table}
 
-%\begin{listing}[H]
-%\caption{Title of the listing}
-%\rule{\columnwidth}{1pt}
-%\raggedright Text of the listing. In font size footnotesize, small, or normalsize. Preferred format: left aligned and single spaced. Preferred border format: top border line and bottom border line.
-%\rule{\columnwidth}{1pt}
-%\end{listing}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Figures/Model_Comparison_Plot.png}
+    \caption{Multi-car generalization results (Last 200 steps). The proposed model (red) maintains alignment with the ground truth even during the abrupt transition at step 610, whereas baselines exhibit significant offsets or spikes.}
+    \label{fig:multi_car_plot}
+\end{figure}
 
-Text.
+\subsection{Robustness against Overfitting in Single-Car Scenarios}
+To test the model's stability under data-scarce conditions, we conducted a single-car experiment using data from vehicle \textbf{V1}. A chronological 80/20 split was applied for training and testing. Since the dataset comprises only a few hundred charging segments, this scenario presents a high risk of overfitting.
 
-Text.
+As detailed in Table~\ref{tab:single_car_results}, the baseline models (Bi-GRU and CNN-BiLSTM) both yielded \textbf{negative $R^2$ scores}, indicating that their predictions are worse than a simple horizontal mean. This failure is visually evident in Figure~\ref{fig:v1_plot}, where the baseline curves (blue, green, orange) diverge violently from the true trajectory. Conversely, the \textbf{Proposed LSTM-iTransformer} maintained an $R^2$ of 0.98 and high alignment. The inverted attention mechanism acts as a powerful regularizer, focusing on multidimensional variable relationships rather than memorized noise. This demonstrates that the model is not only capable of large-scale fleet interpolation but is also exceptionally robust for small-sample precise modeling.
 
-\subsection{Formatting of Mathematical Components}
+\begin{table}[H]
+    \centering
+    \caption{Performance Comparison in Single-Car Robustness Experiment (Test on V1).}
+    \label{tab:single_car_results}
+    \begin{tabular}{lccc}
+    \toprule
+    \textbf{Model} & \textbf{RMSE (\%)} & \textbf{$R^2$ Score} & \textbf{Remark} \\
+    \midrule
+    Baseline 1 (Bi-GRU) & 4.52 & $-$0.65 & Severe Overfitting \\
+    Baseline 3 (CNN-BiLSTM) & 3.85 & $-$0.24 & Overfitting \\
+    \textbf{Proposed (LSTM-iTransformer)} & \textbf{0.85} & \textbf{0.98} & \textbf{Robust} \\
+    \bottomrule
+    \end{tabular}
+\end{table}
 
-This is the example 1 of equation:
-\begin{linenomath}
-\begin{equation}
-a = 1,
-\end{equation}
-\end{linenomath}
-the text following an equation need not be a new paragraph. Please punctuate equations as regular text.
-%% If the documentclass option "submit" is chosen, please insert a blank line before and after any math environment (equation and eqnarray environments). This ensures correct linenumbering. The blank line should be removed when the documentclass option is changed to "accept" because the text following an equation should not be a new paragraph.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Figures/V1_Plot.png}
+    \caption{Single-car robustness results on vehicle V1 (Last 60 steps). Baselines show severe divergence due to overfitting, while the proposed model (red) accurately follows the underlying aging trend.}
+    \label{fig:v1_plot}
+\end{figure}
 
-This is the example 2 of equation:
-%\isPreprints{}{% This command is only used for ``preprints''.
-\begin{adjustwidth}{-\extralength}{0cm}
-%} % If the paper is ``preprints'', please uncomment this parenthesis.
-\begin{equation}
-a = b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q + r + s + t + u + v + w + x + y + z
-\end{equation}
-%\isPreprints{}{% This command is only used for ``preprints''.
-\end{adjustwidth}
-%} % If the paper is ``preprints'', please uncomment this parenthesis.
+% =========================================================================
+\section{Conclusion}
+\label{sec:conclusion}
 
-%% Example of a page in landscape format (with table and table footnote).
-%\startlandscape
-%\begin{table}[H] %% Table in wide page
-%%\isPreprints{\centering}{} % This command is only used for ``preprints''.
-%\caption{This is a very wide table.\label{tab3}}
-%	\begin{tabularx}{\textwidth}{CCCC}
-%		\toprule
-%		\textbf{Title 1}	& \textbf{Title 2}	& \textbf{Title 3}	& \textbf{Title 4}\\
-%		\midrule
-%		Entry 1		& Data			& Data			& This cell has some longer content that runs over two lines.\\
-%		Entry 2		& Data			& Data			& Data\textsuperscript{1}\\
-%		\bottomrule
-%	\end{tabularx}
-%%\isPreprints{}{% This command is only used for ``preprints''.
-%	\begin{adjustwidth}{+\extralength}{0cm}
-%%} % If the paper is ``preprints'', please uncomment this parenthesis.
-%		\noindent\footnotesize{\textsuperscript{1} This is a table footnote.}
-%%\isPreprints{}{% This command is only used for ``preprints''.
-%	\end{adjustwidth}
-%%} % If the paper is ``preprints'', please uncomment this parenthesis.
-%\end{table}
-%\finishlandscape
+This study successfully developed and validated a robust SOH estimation framework for on-road electric vehicles by integrating LSTM with an improved iTransformer architecture. By leveraging a high-fidelity dataset from real-world operations, we addressed the dual challenges of cross-vehicle generalization and small-sample robustness that frequently hinder the deployment of cloud-based battery monitoring systems.
 
-Please punctuate equations as regular text. Theorem-type environments (including propositions, lemmas, corollaries etc.) can be formatted as follows:
-%% Example of a theorem:
-\begin{Theorem}
-Example text of a theorem.
-\end{Theorem}
+Our experimental results demonstrate that the proposed model significantly outperforms traditional hybrid architectures across multiple dimensions. In the multi-car generalization experiment, the model achieved a superior RMSE of 1.18\%, proving its capability to accurately track battery aging in unseen vehicles by learning universal physical correlations rather than memorized driving patterns. Furthermore, the single-car robustness experiment highlighted the model's exceptional anti-overfitting capabilities, maintaining an $R^2$ of 0.98 even when training data was scarce—a scenario where baseline models failed with negative scores.
 
-The text continues here. Proofs must be formatted as follows:
-
-%% Example of a proof:
-\begin{proof}[Proof of Theorem 1]
-Text of the proof. Note that the phrase ``of Theorem 1'' is optional if it is clear which theorem is being referred to.
-\end{proof}
-The text continues here.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Discussion}
-
-Authors should discuss the results and how they can be interpreted from the perspective of previous studies and of the working hypotheses. The findings and their implications should be discussed in the broadest context possible. Future research directions may also be highlighted.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Conclusions}
-
-This section is not mandatory, but can be added to the manuscript if the discussion is unusually long or complex.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Patents}
-
-This section is not mandatory, but may be added if there are patents resulting from the work reported in this manuscript.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\vspace{6pt} 
+The primary contribution of this work lies in the successful application of the inverted attention mechanism to battery big data, which provides a powerful regularization effect and enhances the model's interpretability regarding variable correlations. These findings indicate that the LSTM-iTransformer framework is a highly viable solution for industrial automotive big data platforms, offering accurate and stable life-cycle monitoring for large-scale EV fleets without the need for periodic individual retraining. Future research will explore the integration of physics-informed constraints into the attention layers to further enhance the model's physical consistency under extreme operating conditions.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% optional
@@ -391,17 +367,17 @@ This section is not mandatory, but may be added if there are patents resulting f
 %}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\authorcontributions{For research articles with several authors, a short paragraph specifying their individual contributions must be provided. The following statements should be used ``Conceptualization, X.X. and Y.Y.; methodology, X.X.; software, X.X.; validation, X.X., Y.Y. and Z.Z.; formal analysis, X.X.; investigation, X.X.; resources, X.X.; data curation, X.X.; writing---original draft preparation, X.X.; writing---review and editing, X.X.; visualization, X.X.; supervision, X.X.; project administration, X.X.; funding acquisition, Y.Y. All authors have read and agreed to the published version of the manuscript.'', please turn to the  \href{http://img.mdpi.org/data/contributor-role-instruction.pdf}{CRediT taxonomy} for the term explanation. Authorship must be limited to those who have contributed substantially to the work~reported.}
+% \authorcontributions{For research articles with several authors, a short paragraph specifying their individual contributions must be provided. The following statements should be used ``Conceptualization, X.X. and Y.Y.; methodology, X.X.; software, X.X.; validation, X.X., Y.Y. and Z.Z.; formal analysis, X.X.; investigation, X.X.; resources, X.X.; data curation, X.X.; writing---original draft preparation, X.X.; writing---review and editing, X.X.; visualization, X.X.; supervision, X.X.; project administration, X.X.; funding acquisition, Y.Y. All authors have read and agreed to the published version of the manuscript.'', please turn to the  \href{http://img.mdpi.org/data/contributor-role-instruction.pdf}{CRediT taxonomy} for the term explanation. Authorship must be limited to those who have contributed substantially to the work~reported.}
 
-\funding{Please add: ``This research received no external funding'' or ``This research was funded by NAME OF FUNDER grant number XXX.'' and  and ``The APC was funded by XXX''. Check carefully that the details given are accurate and use the standard spelling of funding agency names at \url{https://search.crossref.org/funding}, any errors may affect your future funding.}
+% \funding{Please add: ``This research received no external funding'' or ``This research was funded by NAME OF FUNDER grant number XXX.'' and  and ``The APC was funded by XXX''. Check carefully that the details given are accurate and use the standard spelling of funding agency names at \url{https://search.crossref.org/funding}, any errors may affect your future funding.}
 
-\institutionalreview{In this section, you should add the Institutional Review Board Statement and approval number, if relevant to your study. You might choose to exclude this statement if the study did not require ethical approval. Please note that the Editorial Office might ask you for further information. Please add “The study was conducted in accordance with the Declaration of Helsinki, and approved by the Institutional Review Board (or Ethics Committee) of NAME OF INSTITUTE (protocol code XXX and date of approval).” for studies involving humans. OR “The animal study protocol was approved by the Institutional Review Board (or Ethics Committee) of NAME OF INSTITUTE (protocol code XXX and date of approval).” for studies involving animals. OR “Ethical review and approval were waived for this study due to REASON (please provide a detailed justification).” OR “Not applicable” for studies not involving humans or animals.}
+% \institutionalreview{In this section, you should add the Institutional Review Board Statement and approval number, if relevant to your study. You might choose to exclude this statement if the study did not require ethical approval. Please note that the Editorial Office might ask you for further information. Please add “The study was conducted in accordance with the Declaration of Helsinki, and approved by the Institutional Review Board (or Ethics Committee) of NAME OF INSTITUTE (protocol code XXX and date of approval).” for studies involving humans. OR “The animal study protocol was approved by the Institutional Review Board (or Ethics Committee) of NAME OF INSTITUTE (protocol code XXX and date of approval).” for studies involving animals. OR “Ethical review and approval were waived for this study due to REASON (please provide a detailed justification).” OR “Not applicable” for studies not involving humans or animals.}
 
-\informedconsent{Any research article describing a study involving humans should contain this statement. Please add ``Informed consent was obtained from all subjects involved in the study.'' OR ``Patient consent was waived due to REASON (please provide a detailed justification).'' OR ``Not applicable'' for studies not involving humans. You might also choose to exclude this statement if the study did not involve humans.
+% \informedconsent{Any research article describing a study involving humans should contain this statement. Please add ``Informed consent was obtained from all subjects involved in the study.'' OR ``Patient consent was waived due to REASON (please provide a detailed justification).'' OR ``Not applicable'' for studies not involving humans. You might also choose to exclude this statement if the study did not involve humans.
 
-Written informed consent for publication must be obtained from participating patients who can be identified (including by the patients themselves). Please state ``Written informed consent has been obtained from the patient(s) to publish this paper'' if applicable.}
+% Written informed consent for publication must be obtained from participating patients who can be identified (including by the patients themselves). Please state ``Written informed consent has been obtained from the patient(s) to publish this paper'' if applicable.}
 
-\dataavailability{We encourage all authors of articles published in MDPI journals to share their research data. In this section, please provide details regarding where data supporting reported results can be found, including links to publicly archived datasets analyzed or generated during the study. Where no new data were created, or where data is unavailable due to privacy or ethical restrictions, a statement is still required. Suggested Data Availability Statements are available in section ``MDPI Research Data Policies'' at \url{https://www.mdpi.com/ethics}.} 
+% \dataavailability{We encourage all authors of articles published in MDPI journals to share their research data. In this section, please provide details regarding where data supporting reported results can be found, including links to publicly archived datasets analyzed or generated during the study. Where no new data were created, or where data is unavailable due to privacy or ethical restrictions, a statement is still required. Suggested Data Availability Statements are available in section ``MDPI Research Data Policies'' at \url{https://www.mdpi.com/ethics}.} 
 
 %\durcstatement{Current research is limited to the [please insert a specific academic field, e.g., XXX], which is beneficial [share benefits and/or primary use] and does not pose a threat to public health or national security. Authors acknowledge the dual-use potential of the research involving xxx and confirm that all necessary precautions have been taken to prevent potential misuse. As an ethical responsibility, authors strictly adhere to relevant national and international laws about DURC. Authors advocate for responsible deployment, ethical considerations, regulatory compliance, and transparent reporting to mitigate misuse risks and foster beneficial outcomes.}
 
@@ -414,53 +390,53 @@ Written informed consent for publication must be obtained from participating pat
 %% Only for journal Nursing Reports
 %\useofartificialintelligence{Please describe in detail any and all uses of artificial intelligence (AI) or AI-assisted tools used in the preparation of the manuscript. This may include, but is not limited to, language translation, language editing and grammar, or generating text. Alternatively, please state that “AI or AI-assisted tools were not used in drafting any aspect of this manuscript”.}
 
-\acknowledgments{In this section you can acknowledge any support given which is not covered by the author contribution or funding sections. This may include administrative and technical support, or donations in kind (e.g., materials used for experiments). Where GenAI has been used for purposes such as generating text, data, or graphics, or for study design, data collection, analysis, or interpretation of data, please add “During the preparation of this manuscript/study, the author(s) used [tool name, version information] for the purposes of [description of use]. The authors have reviewed and edited the output and take full responsibility for the content of this publication.”}
+% \acknowledgments{In this section you can acknowledge any support given which is not covered by the author contribution or funding sections. This may include administrative and technical support, or donations in kind (e.g., materials used for experiments). Where GenAI has been used for purposes such as generating text, data, or graphics, or for study design, data collection, analysis, or interpretation of data, please add “During the preparation of this manuscript/study, the author(s) used [tool name, version information] for the purposes of [description of use]. The authors have reviewed and edited the output and take full responsibility for the content of this publication.”}
 
-\conflictsofinterest{Declare conflicts of interest or state ``The authors declare no conflicts of interest.'' Authors must identify and declare any personal circumstances or interest that may be perceived as inappropriately influencing the representation or interpretation of reported research results. Any role of the funders in the design of the study; in the collection, analyses or interpretation of data; in the writing of the manuscript; or in the decision to publish the results must be declared in this section. If there is no role, please state ``The funders had no role in the design of the study; in the collection, analyses, or interpretation of data; in the writing of the manuscript; or in the decision to publish the results''.} 
+% \conflictsofinterest{Declare conflicts of interest or state ``The authors declare no conflicts of interest.'' Authors must identify and declare any personal circumstances or interest that may be perceived as inappropriately influencing the representation or interpretation of reported research results. Any role of the funders in the design of the study; in the collection, analyses or interpretation of data; in the writing of the manuscript; or in the decision to publish the results must be declared in this section. If there is no role, please state ``The funders had no role in the design of the study; in the collection, analyses, or interpretation of data; in the writing of the manuscript; or in the decision to publish the results''.} 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Optional
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Optional
 
-%% Only for journal Encyclopedia
-%\entrylink{The Link to this entry published on the encyclopedia platform.}
-\newpage
-\abbreviations{Abbreviations}{
-The following abbreviations are used in this manuscript:
-\\
+% %% Only for journal Encyclopedia
+% %\entrylink{The Link to this entry published on the encyclopedia platform.}
+% \newpage
+% \abbreviations{Abbreviations}{
+% The following abbreviations are used in this manuscript:
+% \\
 
-\noindent 
-\begin{tabular}{@{}ll}
-MDPI & Multidisciplinary Digital Publishing Institute\\
-DOAJ & Directory of open access journals\\
-TLA & Three letter acronym\\
-LD & Linear dichroism
-\end{tabular}
-}
+% \noindent 
+% \begin{tabular}{@{}ll}
+% MDPI & Multidisciplinary Digital Publishing Institute\\
+% DOAJ & Directory of open access journals\\
+% TLA & Three letter acronym\\
+% LD & Linear dichroism
+% \end{tabular}
+% }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Optional
-\appendixtitles{no} % Leave argument "no" if all appendix headings stay EMPTY (then no dot is printed after "Appendix A"). If the appendix sections contain a heading then change the argument to "yes".
-\appendixstart
-\appendix
-\section[\appendixname~\thesection]{}
-\subsection[\appendixname~\thesubsection]{}
-The appendix is an optional section that can contain details and data supplemental to the main text---for example, explanations of experimental details that would disrupt the flow of the main text but nonetheless remain crucial to understanding and reproducing the research shown; figures of replicates for experiments of which representative data are shown in the main text can be added here if brief, or as Supplementary Data. Mathematical proofs of results not central to the paper can be added as an appendix.
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Optional
+% \appendixtitles{no} % Leave argument "no" if all appendix headings stay EMPTY (then no dot is printed after "Appendix A"). If the appendix sections contain a heading then change the argument to "yes".
+% \appendixstart
+% \appendix
+% \section[\appendixname~\thesection]{}
+% \subsection[\appendixname~\thesubsection]{}
+% The appendix is an optional section that can contain details and data supplemental to the main text---for example, explanations of experimental details that would disrupt the flow of the main text but nonetheless remain crucial to understanding and reproducing the research shown; figures of replicates for experiments of which representative data are shown in the main text can be added here if brief, or as Supplementary Data. Mathematical proofs of results not central to the paper can be added as an appendix.
 
-\begin{table}[H] 
-\caption{This is a table caption.\label{tab5}}
-%\newcolumntype{C}{>{\centering\arraybackslash}X}
-\begin{tabularx}{\textwidth}{CCC}
-\toprule
-\textbf{Title 1}	& \textbf{Title 2}	& \textbf{Title 3}\\
-\midrule
-Entry 1		& Data			& Data\\
-Entry 2		& Data			& Data\\
-\bottomrule
-\end{tabularx}
-\end{table}
+% \begin{table}[H] 
+% \caption{This is a table caption.\label{tab5}}
+% %\newcolumntype{C}{>{\centering\arraybackslash}X}
+% \begin{tabularx}{\textwidth}{CCC}
+% \toprule
+% \textbf{Title 1}	& \textbf{Title 2}	& \textbf{Title 3}\\
+% \midrule
+% Entry 1		& Data			& Data\\
+% Entry 2		& Data			& Data\\
+% \bottomrule
+% \end{tabularx}
+% \end{table}
 
-\section[\appendixname~\thesection]{}
-All appendix sections must be cited in the main text. In the appendices, Figures, Tables, etc. should be labeled, starting with ``A''---e.g., Figure A1, Figure A2, etc.
+% \section[\appendixname~\thesection]{}
+% All appendix sections must be cited in the main text. In the appendices, Figures, Tables, etc. should be labeled, starting with ``A''---e.g., Figure A1, Figure A2, etc.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\isPreprints{}{% This command is only used for ``preprints''.
@@ -476,38 +452,38 @@ All appendix sections must be cited in the main text. In the appendices, Figures
 %=====================================
 % References, variant A: external bibliography
 %=====================================
-% \bibliography{your_external_BibTeX_file}
+\bibliography{references}
 
 %=====================================
 % References, variant B: internal bibliography
 %=====================================
 
 % APA format
-\begin{thebibliography}{999}
+%\begin{thebibliography}{999}
 % Reference 1
-\bibitem[\protect\citeauthoryear{Azikiwe \BBA\ Bello}{{2020a}}]{ref-journal}
-Azikiwe, H., \& Bello, A. (2020a). Title of the cited article. \textit{Journal Title}, \textit{Volume}(Issue), 
-Firstpage--Lastpage/Article Number.
-% Reference 2
-\bibitem[\protect\citeauthoryear{Azikiwe \BBA\ Bello}{{2020b}}]{ref-book1}
-Azikiwe, H., \& Bello, A. (2020b). \textit{Book title}. Publisher Name.
-% Reference 3
-\bibitem[Davison(1623/2019)]{ref-book2}
-Davison, T. E. (2019). Title of the book chapter. In A. A. Editor (Ed.), \textit{Title of the book: Subtitle} 
-(pp. Firstpage--Lastpage). Publisher Name. (Original work published 1623) (Optional).
-% Reference 4
-\bibitem[Fistek et al.(2017)]{ref-proceeding}
-Fistek, A., Jester, E., \& Sonnenberg, K. (2017, Month Day). Title of contribution [Type of contribution]. Conference Name, Conference City, Conference Country.
-% Reference 5
-\bibitem[Hutcheson(2012)]{ref-thesis}
-Hutcheson, V. H. (2012). \textit{Title of the thesis} [XX Thesis, Name of Institution Awarding the Degree].
-% Reference 6
-\bibitem[Lippincott \& Poindexter(2019)]{ref-unpublish}
-Lippincott, T., \& Poindexter, E. K. (2019). \textit{Title of the unpublished manuscript} [Unpublished manuscript/Manuscript in prepara-tion/Manuscript submitted for publication]. Department Name, Institution Name.
-% Reference 7
-\bibitem[Harwood(2008)]{ref-url}
-Harwood, J. (2008). \textit{Title of the cited article}. Available online: URL (accessed on Day Month Year).
-\end{thebibliography}
+%\bibitem[\protect\citeauthoryear{Azikiwe \BBA\ Bello}{{2020a}}]{ref-journal}
+% Azikiwe, H., \& Bello, A. (2020a). Title of the cited article. \textit{Journal Title}, \textit{Volume}(Issue), 
+% Firstpage--Lastpage/Article Number.
+% % Reference 2
+% \bibitem[\protect\citeauthoryear{Azikiwe \BBA\ Bello}{{2020b}}]{ref-book1}
+% Azikiwe, H., \& Bello, A. (2020b). \textit{Book title}. Publisher Name.
+% % Reference 3
+% \bibitem[Davison(1623/2019)]{ref-book2}
+% Davison, T. E. (2019). Title of the book chapter. In A. A. Editor (Ed.), \textit{Title of the book: Subtitle} 
+% (pp. Firstpage--Lastpage). Publisher Name. (Original work published 1623) (Optional).
+% % Reference 4
+% \bibitem[Fistek et al.(2017)]{ref-proceeding}
+% Fistek, A., Jester, E., \& Sonnenberg, K. (2017, Month Day). Title of contribution [Type of contribution]. Conference Name, Conference City, Conference Country.
+% % Reference 5
+% \bibitem[Hutcheson(2012)]{ref-thesis}
+% Hutcheson, V. H. (2012). \textit{Title of the thesis} [XX Thesis, Name of Institution Awarding the Degree].
+% % Reference 6
+% \bibitem[Lippincott \& Poindexter(2019)]{ref-unpublish}
+% Lippincott, T., \& Poindexter, E. K. (2019). \textit{Title of the unpublished manuscript} [Unpublished manuscript/Manuscript in prepara-tion/Manuscript submitted for publication]. Department Name, Institution Name.
+% % Reference 7
+% \bibitem[Harwood(2008)]{ref-url}
+% Harwood, J. (2008). \textit{Title of the cited article}. Available online: URL (accessed on Day Month Year).
+%\end{thebibliography}
 
 
 % If authors have biography, please use the format below

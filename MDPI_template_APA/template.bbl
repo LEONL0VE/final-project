@@ -1,0 +1,18 @@
+\begin{thebibliography}{999}
+
+\bibitem[\protect\citeauthoryear{Azikiwe \BBA\ Bello}{Azikiwe \BBA\ Bello}{{2020}}]{ref-journal}
+Azikiwe, H.,  \BBA\ Bello, A.
+\newblock
+\APACrefYearMonthDay{2020}{}{}.
+\newblock Title of the cited article.
+\newblock \APACjournalVolNumPages{Journal Title}{Volume}{Issue}{Firstpage--Lastpage}.
+
+\bibitem[\protect\citeauthoryear{Davison}{Davison}{{2019}}]{ref-book2}
+Davison, T.  E.
+\newblock
+\APACrefYearMonthDay{2019}{}{}.
+\newblock Title of the book chapter.
+\newblock \BIn{} A.  A.~Editor\ (\BED), \APACrefbtitle {Title of the book: Subtitle} {Title of the book: Subtitle}\ (\BPGS\ Firstpage--Lastpage).
+\newblock \APACaddressPublisher{}{Publisher Name}.
+
+\end{thebibliography}
